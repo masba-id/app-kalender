@@ -47,6 +47,7 @@
 
     $(document).ready(function(){
 
+        // action when date on calendar is clicked
         $('.tabel-kalender .tag-td.day, .tabel-kalender .tag-td.currentday, .tabel-kalender .tag-td.birthday, .tabel-kalender .tag-td.holiday, .tabel-kalender .tag-td.specialdate, a.show-calendar-detail').click(function(e){
             e.stopPropagation();
             e.preventDefault();

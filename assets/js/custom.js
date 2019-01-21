@@ -19,15 +19,7 @@ $(document).ready(function(){
 
     $('#btn-reload').click(function(e){
         e.preventDefault();
-        $('#default-wrapper').fadeOut();
-        loader_div.show();
-        
-        $('#default-wrapper').load('kalender/load_default', function(){
-            loader_div.hide();
-            $(this).slideDown('fast');
-        });
-
-        return false;
+        reloadCalendar();
     });
     
     $('#btn-back').click(function(e){
@@ -166,8 +158,11 @@ function simpanDataBaru(form, nama, fulldate){
                 $('#saving-loader').hide();
                 $('#addformmodal').modal('hide');
                 form[0].reset();
-                $('#calendarmodal .modal-body').prepend('<div id="notification" class="alert alert-success"><b>Suskes simpan data!</b><br>Silakan reload kalender untuk melihat perubahannya.</div>');
-                $('#calendarmodal .modal-body #notification').fadeOutAndRemove(7000);
+
+                // reload event list
+                var splitfulldate = fulldate.split('-');
+                var bulan_dan_tanggal_event = splitfulldate[1] + '-' + splitfulldate[2];
+                reloadEventList(bulan_dan_tanggal_event);
             }else{
                 $('#saving-loader').hide();
                 alert('Simpan gagal! Silakan ulangi beberapa saat kemudian.');
@@ -178,4 +173,31 @@ function simpanDataBaru(form, nama, fulldate){
             alert('Error occured on AJAX request! Please try again later.');
         }
     });
+}
+
+function reloadEventList(bulan_dan_tanggal_event){
+    // prepare modal body object
+    var body = $('#calendarmodal .modal-body').find('#calendar-body');
+
+    // loading content
+    body.html(img_loader + ' Updating list . . . ');
+
+    getEventList(body, bulan_dan_tanggal_event, null);
+
+    $('#calendarmodal .modal-body').prepend('<div id="notification" class="alert alert-success"><b>Suskes simpan data!</b></div>');
+    $('#calendarmodal .modal-body #notification').fadeOutAndRemove(6000);
+
+    reloadCalendar();
+}
+
+function reloadCalendar(){
+    $('#default-wrapper').fadeOut();
+    loader_div.show();
+    
+    $('#default-wrapper').load('kalender/load_default', function(){
+        loader_div.hide();
+        $(this).slideDown('fast');
+    });
+
+    return false;
 }

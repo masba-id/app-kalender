@@ -3,7 +3,7 @@
 class Kalender_model extends CI_Model{
 
 	function get_all_events(){
-		$q = $this->db->select('*, DATE_FORMAT(`birth_date`,"%d") AS born_date, DATE_FORMAT(`birth_date`,"%m") AS born_month, YEAR(birth_date) AS born_year, YEAR(curdate()) - YEAR(birth_date) AS age')
+		$q = $this->db->select('*, DATE_FORMAT(`birth_date`,"%d") AS born_date, DATE_FORMAT(`birth_date`,"%m") AS born_month, YEAR(birth_date) AS born_year, YEAR(curdate()) - YEAR(`birth_date`) - (DATE_FORMAT(NOW(),"00-%m-%d") < DATE_FORMAT(`birth_date`,"00-%m-%d")) AS age')
 			->from('events')
 			->get();
 
@@ -16,7 +16,7 @@ class Kalender_model extends CI_Model{
 	}
 
 	function get_events_by_fulldate($fulldate){
-		$q = $this->db->select('*, DATE_FORMAT(`birth_date`,"%d") AS born_date, DATE_FORMAT(`birth_date`,"%m") AS born_month, YEAR(birth_date) AS born_year, YEAR(curdate()) - YEAR(birth_date) AS age')
+		$q = $this->db->select('*, DATE_FORMAT(`birth_date`,"%d") AS born_date, DATE_FORMAT(`birth_date`,"%m") AS born_month, YEAR(birth_date) AS born_year, YEAR(curdate()) - YEAR(`birth_date`) - (DATE_FORMAT(NOW(),"00-%m-%d") < DATE_FORMAT(`birth_date`,"00-%m-%d")) AS age')
 			->from('events')
 			->where('birth_date',$fulldate)
 			->get();
@@ -30,7 +30,7 @@ class Kalender_model extends CI_Model{
 	}
 
 	function get_events_by_month_and_date($month_and_date){
-		$q = $this->db->select('*, DATE_FORMAT(`birth_date`,"%d") AS born_date, DATE_FORMAT(`birth_date`,"%m") AS born_month, YEAR(birth_date) AS born_year, YEAR(curdate()) - YEAR(birth_date) AS age')
+		$q = $this->db->select('*, DATE_FORMAT(`birth_date`,"%d") AS born_date, DATE_FORMAT(`birth_date`,"%m") AS born_month, YEAR(birth_date) AS born_year, YEAR(curdate()) - YEAR(`birth_date`) - (DATE_FORMAT(NOW(),"00-%m-%d") < DATE_FORMAT(`birth_date`,"00-%m-%d")) AS age')
 			->from('events')
 			->like('birth_date','-'.$month_and_date)
 			->get();
@@ -44,7 +44,7 @@ class Kalender_model extends CI_Model{
 	}
 	
 	function get_events_by_month($month){
-		$q = $this->db->select('*, DATE_FORMAT(`birth_date`,"%d") AS born_date, DATE_FORMAT(`birth_date`,"%m") AS born_month, YEAR(birth_date) AS born_year, YEAR(curdate()) - YEAR(birth_date) AS age')
+		$q = $this->db->select('*, DATE_FORMAT(`birth_date`,"%d") AS born_date, DATE_FORMAT(`birth_date`,"%m") AS born_month, YEAR(birth_date) AS born_year, YEAR(curdate()) - YEAR(`birth_date`) - (DATE_FORMAT(NOW(),"00-%m-%d") < DATE_FORMAT(`birth_date`,"00-%m-%d")) AS age')
 			->from('events')
 			->like('birth_date','-'.$month.'-')
 			->get();
@@ -58,7 +58,7 @@ class Kalender_model extends CI_Model{
 	}
 	
 	function get_events_by_year($year){
-		$q = $this->db->select('*, DATE_FORMAT(`birth_date`,"%d") AS born_date, DATE_FORMAT(`birth_date`,"%m") AS born_month, YEAR(birth_date) AS born_year, YEAR(curdate()) - YEAR(birth_date) AS age')
+		$q = $this->db->select('*, DATE_FORMAT(`birth_date`,"%d") AS born_date, DATE_FORMAT(`birth_date`,"%m") AS born_month, YEAR(birth_date) AS born_year, YEAR(curdate()) - YEAR(`birth_date`) - (DATE_FORMAT(NOW(),"00-%m-%d") < DATE_FORMAT(`birth_date`,"00-%m-%d")) AS age')
 			->from('events')
 			->like('birth_date',$year.'-')
 			->get();
@@ -72,7 +72,7 @@ class Kalender_model extends CI_Model{
 	}
 	
 	function get_events_by_name($name){
-		$q = $this->db->select('*, DATE_FORMAT(`birth_date`,"%d") AS born_date, DATE_FORMAT(`birth_date`,"%m") AS born_month, YEAR(birth_date) AS born_year, YEAR(curdate()) - YEAR(birth_date) AS age')
+		$q = $this->db->select('*, DATE_FORMAT(`birth_date`,"%d") AS born_date, DATE_FORMAT(`birth_date`,"%m") AS born_month, YEAR(birth_date) AS born_year, YEAR(curdate()) - YEAR(`birth_date`) - (DATE_FORMAT(NOW(),"00-%m-%d") < DATE_FORMAT(`birth_date`,"00-%m-%d")) AS age')
 			->from('events')
 			->like('name',$name)
 			->get();
@@ -86,7 +86,7 @@ class Kalender_model extends CI_Model{
 	}
 	
 	function get_event_by_id($id){
-		$q = $this->db->select('*, DATE_FORMAT(`birth_date`,"%d") AS born_date, DATE_FORMAT(`birth_date`,"%m") AS born_month, YEAR(birth_date) AS born_year, YEAR(curdate()) - YEAR(birth_date) AS age')
+		$q = $this->db->select('*, DATE_FORMAT(`birth_date`,"%d") AS born_date, DATE_FORMAT(`birth_date`,"%m") AS born_month, YEAR(birth_date) AS born_year, YEAR(curdate()) - YEAR(`birth_date`) - (DATE_FORMAT(NOW(),"00-%m-%d") < DATE_FORMAT(`birth_date`,"00-%m-%d")) AS age')
 			->from('events')
 			->where('id',$id)
 			->get();
@@ -94,6 +94,20 @@ class Kalender_model extends CI_Model{
 		if($q->num_rows() > 0){
 			$row = $q->row_array();
 			return $row;
+		} else {
+			return NULL;
+		}
+	}
+
+	function get_total_events_by_month_and_date($month_and_date){
+		$q = $this->db->select('COUNT(birth_date) AS total_events')
+			->from('events')
+			->like('birth_date','-'.$month_and_date)
+			->get();
+
+		if($q->num_rows() > 0){
+			$res = $q->row();
+			return $res;
 		} else {
 			return NULL;
 		}

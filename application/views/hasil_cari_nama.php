@@ -3,7 +3,7 @@
         <h4>Hasil pencarian nama "<b><?=$nama?></b>":</h4>
     </div>
 	<div class="table-responsive">
-        <p>NB: Silakan klik pada data <b>Nama/Tanggal Lahir</b> jika ingin merubahnya</p>
+        <p>NB: Silakan klik pada data <b>Nama</b> atau <b>Tanggal Lahir</b> jika ingin merubahnya</p>
 		<table class="table table-bordered" id="search-results-table">
 	        <tr>
 	            <th>No</th>

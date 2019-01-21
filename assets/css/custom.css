@@ -1,14 +1,15 @@
     .app-title{
         text-transform: uppercase;
+        text-decoration: underline;
     }
     
     .tag-table{
         padding: 10px; 
         margin: 0 auto 30px;
         font-size: 24px; 
-        display: table;
         border-collapse: separate;
         border-spacing: 2px;
+        background-color: #FCFCEF;
     }
     
     .tag-table.same-height{
@@ -87,11 +88,16 @@
     
     .birthday{
         text-align: center; 
-        background-color: rgb(255, 17, 0);
+        /*background-color: rgb(255, 17, 0);*/
+        background-color: #00C853;
     }
     
     .tag-td.birthday, .birthday>a{
         color: #FFF !important;
+    }
+
+    .tag-td.holiday, .tag-td.day{
+        background: #FFF;
     }
 
     .keterangan{
@@ -203,4 +209,26 @@
 
     #notification{
         font-size: 15px;
+    }
+
+    .credit-author{
+        letter-spacing: 6px;
+        font-weight: bold;
+    }
+
+
+    /*** ================================ RESPONSIVE MEDIA QUERIES ================================ ***/
+
+    @media only screen and (max-width: 767px)
+    {
+        .tag-table{
+            display: table;
+        }
+    }
+
+    @media only screen and (min-width: 768px) 
+    {
+        .tag-table.tabel-keterangan{
+            display: table;
+        }
     }

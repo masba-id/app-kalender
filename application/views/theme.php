@@ -32,8 +32,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h1 class="text-center app-title"><i class="glyphicon glyphicon-calendar"></i> Kalender 2018</h1>
+                    <h1 class="text-center app-title"><i class="glyphicon glyphicon-calendar" style="padding-right: 10px;"></i>Kalender <?=date('Y')?></h1>
                     
+                    <hr>
                     <div class="form-group" id="btn-reload-wrapper">
                         <div class="btn btn-info" id="btn-reload">
                             <strong><i class="glyphicon glyphicon-refresh"></i> Reload Kalender</strong>
@@ -64,7 +65,7 @@
                     <div class="row" id="keterangan-wrapper">
                         <div class="col-md-12">
                             <h5><b>Keterangan:</b></h5>
-                            <div class="tag-table" style="margin:0;">
+                            <div class="tag-table tabel-keterangan" style="margin:0;">
                                 <div class="tag-tbody">
                                     <div class="tag-tr">
                                         <div class="tag-td keterangan same-width holiday">Hari Libur</div>
@@ -87,11 +88,11 @@
             </div>
         </div>
         
-        <footer>
+        <footer style="margin: 10px 0">
             <!--Copyright-->
             <div class="text-center">
                 <p>© 2018</p>
-                <h5>BAGOS ANGGARA</h5>
+                <h5 class="credit-author">BAGOS ANGGARA</h5>
             </div>
             <!--/.Copyright-->
         </footer>

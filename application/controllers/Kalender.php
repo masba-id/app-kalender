@@ -3,12 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Kalender extends CI_Controller {
 
-	function __construct(){
+    function __construct(){
         parent::__construct();
         $this->load->model('Kalender_model');
+        $this->tahun_berjalan = date('Y');
     }
 
-	public function index(){	
+	public function index(){
         if($this->input->is_ajax_request()):
             $nama = $this->input->post('nama');
             $hasil_cari_nama = $this->Kalender_model->get_events_by_name($nama);
@@ -29,19 +30,20 @@ class Kalender extends CI_Controller {
 
     public function load_default(){
         if($this->input->is_ajax_request()):
+            //die(var_dump('ajax true'));
 			$d = array(
-				'januari' => $this->_bikin_kalender(1,2018),
-				'februari' => $this->_bikin_kalender(2,2018),
-				'maret' => $this->_bikin_kalender(3,2018),
-				'april' => $this->_bikin_kalender(4,2018),
-				'mei' => $this->_bikin_kalender(5,2018),
-				'juni' => $this->_bikin_kalender(6,2018),
-				'juli' => $this->_bikin_kalender(7,2018),
-				'agustus' => $this->_bikin_kalender(8,2018),
-				'september' => $this->_bikin_kalender(9,2018),
-				'oktober' => $this->_bikin_kalender(10,2018),
-				'november' => $this->_bikin_kalender(11,2018),
-				'desember' => $this->_bikin_kalender(12,2018),
+				'januari' => $this->_bikin_kalender(1,$this->tahun_berjalan),
+				'februari' => $this->_bikin_kalender(2,$this->tahun_berjalan),
+				'maret' => $this->_bikin_kalender(3,$this->tahun_berjalan),
+				'april' => $this->_bikin_kalender(4,$this->tahun_berjalan),
+				'mei' => $this->_bikin_kalender(5,$this->tahun_berjalan),
+				'juni' => $this->_bikin_kalender(6,$this->tahun_berjalan),
+				'juli' => $this->_bikin_kalender(7,$this->tahun_berjalan),
+				'agustus' => $this->_bikin_kalender(8,$this->tahun_berjalan),
+				'september' => $this->_bikin_kalender(9,$this->tahun_berjalan),
+				'oktober' => $this->_bikin_kalender(10,$this->tahun_berjalan),
+				'november' => $this->_bikin_kalender(11,$this->tahun_berjalan),
+				'desember' => $this->_bikin_kalender(12,$this->tahun_berjalan),
 			);
 			$view =  $this->load->view('default_content', $d, TRUE);
 			
@@ -54,13 +56,14 @@ class Kalender extends CI_Controller {
     public function get_event_list(){
         if($this->input->is_ajax_request()):
             $bulan_dan_tanggal = $this->input->post('bulan_dan_tanggal');
-            $total_event = $this->input->post('total_event');
+            //$total_event = $this->input->post('total_event');
+            $total_event = $this->Kalender_model->get_total_events_by_month_and_date($bulan_dan_tanggal);
             $list = $this->Kalender_model->get_events_by_month_and_date($bulan_dan_tanggal);
             
             $bdtArr = explode("-",$bulan_dan_tanggal);
             list($bulan, $tanggal) = $bdtArr;
             $data['bulan_dan_tanggal'] = $bulan_dan_tanggal;
-            $data['total_event'] = $total_event;
+            $data['total_event'] = $total_event->total_events;
             $data['tanggal_event'] = (int)$tanggal.' '.nama_bulan((int)$bulan);
             $data['list'] = $list;
             $view = $this->load->view('event_list_popup', $data, TRUE);
@@ -69,6 +72,18 @@ class Kalender extends CI_Controller {
         else:
             show404();
         endif;
+    }
+
+    public function reload_total_events()
+    {
+        if($this->input->is_ajax_request()):
+            $bulan_dan_tanggal = $this->input->post('bulan_dan_tanggal');
+            $total_event = $this->Kalender_model->get_total_events_by_month_and_date($bulan_dan_tanggal);
+
+            print $total_event->total_events;
+        else:
+            show404();
+        endif;   
     }
 
     private function _bikin_kalender($month, $year){

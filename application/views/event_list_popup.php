@@ -3,12 +3,12 @@
         <h4>Daftar event pada tanggal "<b><?=$tanggal_event?></b>":</h4>
     </div>
 	<div class="table-responsive">
-        <p class="popup-notice">Jumlah: <b><?=$total_event?> orang</b></p><br>
-        <p class="popup-notice">NB: Silakan klik pada data <b>Nama/Tanggal Lahir</b> jika ingin merubahnya</p>
+        <p class="popup-notice">Jumlah: <b><span id="person-count"><?=$total_event?></span> orang</b></p><br>
+        <p class="popup-notice">NB: Silakan klik pada data <b>Nama</b> atau <b>Tanggal Lahir</b> jika ingin merubahnya</p>
         <a id="btn-add-event" href="#"><span class="btn-add-event"><i class="glyphicon glyphicon-plus-sign"></i> Tambah Event</span></a>
 		<table class="table table-bordered" id="event-list-table">
 	        <tr>
-	            <th>No</th>
+	            <th>ID</th>
 	            <th style="width: 30%;">Nama</th>
 	            <th style="width: 40%;">Tanggal Lahir (YYYY-MM-DD)</th>
 	            <th>Usia</th>
@@ -16,7 +16,7 @@
 	        </tr>
 	        <?php $i=1; foreach ($list as $l): ?>
 				<tr data-id="<?=$l['id']?>">
-					<td><?=$i?></td>
+					<td><?=$l['id']?></td>
 					<td class="editable-name" contenteditable="true" onBlur="saveToDatabase2(this,'name','<?=$l['id']?>')" onClick="showEditName2(this);">
                         <?=$l['name']?>
                     </td>
@@ -60,6 +60,19 @@
                     success: function(response){
                         if(response === 'success'){
                             row.fadeOut('fast');
+                            $.ajax({
+                                url: 'kalender/reload_total_events',
+                                type: "POST",
+                                data: {bulan_dan_tanggal: '<?=$bulan_dan_tanggal?>'},
+                                success: function(response, textStatus, jqXHR){
+                                    $('#person-count').html(response);
+                                    reloadCalendar();
+                                    console.log(textStatus);
+                                },
+                                error: function(){
+                                    //
+                                }
+                            });
                         }else{
                             alert("Hapus gagal!");
                         }
