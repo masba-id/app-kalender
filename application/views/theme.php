@@ -92,7 +92,7 @@
         <footer style="margin: 10px 0">
             <!--Copyright-->
             <div class="text-center">
-                <p>© 2018</p>
+                <p>© <?=date('Y')?></p>
                 <h5 class="credit-author">BAGOS ANGGARA</h5>
             </div>
             <!--/.Copyright-->
