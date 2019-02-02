@@ -49,7 +49,7 @@ class Kalender extends CI_Controller {
 			
 			print $view;
 		else:
-            show404();
+            show_404();
         endif;
     }
 
@@ -70,7 +70,7 @@ class Kalender extends CI_Controller {
             
             print $view;
         else:
-            show404();
+            show_404();
         endif;
     }
 
@@ -82,7 +82,7 @@ class Kalender extends CI_Controller {
 
             print $total_event->total_events;
         else:
-            show404();
+            show_404();
         endif;   
     }
 
@@ -185,7 +185,7 @@ class Kalender extends CI_Controller {
             exit;
         }
         else{
-            show404();
+            show_404();
         }
     }
 
@@ -200,7 +200,7 @@ class Kalender extends CI_Controller {
             exit;
         }
         else{
-            show404();
+            show_404();
         }
     }
     
@@ -215,7 +215,7 @@ class Kalender extends CI_Controller {
             exit;
         }
         else{
-            show404();
+            show_404();
         }
     }
 
