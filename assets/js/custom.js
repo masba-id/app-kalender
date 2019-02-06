@@ -1,6 +1,7 @@
 var loader_div = $('#loader-wrapper');
 var search_content_div = $('#search-results-wrapper .col-md-12');
 var keterangan_div = $('#keterangan-wrapper');
+var clicked_dom = null;
 
 jQuery.fn.fadeOutAndRemove = function(speed){
     $(this).fadeOut(speed,function(){
@@ -42,8 +43,13 @@ $(document).ready(function(){
 
 });
 
-function getCalendarModal(tanggal_event, total_event){
+function getCalendarModal(tanggal_event, total_event, clicked_date=null){
 	if ($("#calendarmodal").data('bs.modal') && $("#calendarmodal").data('bs.modal').isShown){
+        if(clicked_date != null)
+        {
+            clicked_dom = clicked_date;
+            //console.log(clicked_dom);
+        }
         setTimeout(function(){
             // prepare modal body object
             var body = $('#calendarmodal .modal-body').find('#calendar-body');
@@ -104,7 +110,7 @@ function searchName(name){
     }, 500);
 }
 
-function getEventList(body, tanggal_event, total_event){
+function getEventList(body, tanggal_event, total_event, reload_calendar=false){
 
     // ajax here
     $.ajax({
@@ -113,6 +119,11 @@ function getEventList(body, tanggal_event, total_event){
         data: {bulan_dan_tanggal: tanggal_event, total_event: total_event},
         success: function(response, textStatus, jqXHR){
             body.html(response);
+            if(clicked_dom != null && reload_calendar === true)
+            {
+                clicked_dom.attr('class', '');
+                clicked_dom.addClass('tag-td birthday');
+            }    
             console.log(textStatus);
         },
         error: function(){
@@ -182,12 +193,13 @@ function reloadEventList(bulan_dan_tanggal_event){
     // loading content
     body.html(img_loader + ' Updating list . . . ');
 
-    getEventList(body, bulan_dan_tanggal_event, null);
+    getEventList(body, bulan_dan_tanggal_event, null, true);
 
     $('#calendarmodal .modal-body').prepend('<div id="notification" class="alert alert-success"><b>Suskes simpan data!</b></div>');
     $('#calendarmodal .modal-body #notification').fadeOutAndRemove(6000);
 
-    reloadCalendar();
+    //reloadCalendar();
+
 }
 
 function reloadCalendar(){

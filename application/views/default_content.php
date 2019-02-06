@@ -52,6 +52,14 @@
             e.stopPropagation();
             e.preventDefault();
 
+            if($(this).attr("href"))
+            {
+                var clicked_date = $(this).parent();
+            }
+            else
+            {
+                var clicked_date = $(this);
+            }
             var tanggal_event = $(this).data('tanggal-event');
             var total_event = $(this).data('total-event');
             $('#calendarmodal').modal('toggle');
@@ -67,7 +75,7 @@
             $('#calendarmodal .modal-body').find('#calendar-body').html(img_loader + ' Please wait . . . ');
             
             // get data by using ajax
-            getCalendarModal(tanggal_event, total_event);
+            getCalendarModal(tanggal_event, total_event, clicked_date);
             
             return false;
         });
