@@ -140,7 +140,18 @@ class Kalender extends CI_Controller {
             $data = $this->Kalender_model->get_events_by_month_and_date($month.'-'.$CounterHariRel);
             $total_event = count($data);
             if($total_event>0 && $data[0]['born_date']==$CounterHariRel){
-                $Kalender .= "<div class=\"tag-td birthday\" title=\"Hari Ulang Tahun (Klik pada tanggal untuk melihat data)\" data-tanggal-event='$month-".angka_tanggal($CounterHari)."' data-total-event='$total_event'><a href=\"#\" class=\"show-calendar-detail\" data-tanggal-event='$month-".angka_tanggal($CounterHari)."' data-total-event='$total_event'>$CounterHari</a></div>";
+                $initDayClass = 'day';
+                
+                //jika hari minggu
+                if ($IndeksHariPertama==0) {$initDayClass = 'holiday';}
+
+                //jika HUT RI
+                if ($CounterHari==17 and $month == 8) {$initDayClass = 'specialdate';}
+
+                //jika hari ini
+                if ($CounterHari==$hr and $month==$bln and $Tahun==$thn) {$initDayClass = 'currentday';}
+
+                $Kalender .= "<div class=\"tag-td ".$initDayClass." birthday\" title=\"Hari Ulang Tahun (Klik pada tanggal untuk melihat data)\" data-tanggal-event='$month-".angka_tanggal($CounterHari)."' data-total-event='$total_event'><a href=\"#\" class=\"show-calendar-detail\" data-tanggal-event='$month-".angka_tanggal($CounterHari)."' data-total-event='$total_event'>$CounterHari</a></div>";
             }
             else if($CounterHari==$hr and $month==$bln and $Tahun==$thn){
                 $Kalender .= "<div class=\"tag-td currentday\" title=\"Hari Ini (Klik pada tanggal untuk membuat data baru)\" data-tanggal-event='$month-".angka_tanggal($CounterHari)."' data-total-event='$total_event'><a href=\"#\" class=\"show-calendar-detail\" data-tanggal-event='$month-".angka_tanggal($CounterHari)."' data-total-event='$total_event'>$CounterHari</a></div>";

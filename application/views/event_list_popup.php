@@ -66,17 +66,21 @@
                                 data: {bulan_dan_tanggal: '<?=$bulan_dan_tanggal?>'},
                                 success: function(response, textStatus, jqXHR){
                                     $('#person-count').html(response);
-                                    reloadCalendar();
-                                    console.log(textStatus);
+                                    
+                                    // reload event list after delete
+                                    var bulan_dan_tanggal_event = '<?=$bulan_dan_tanggal?>';
+                                    var is_record_count_empty = (response == 0 ? true : false);
+                                    reloadEventListAfterDelete(bulan_dan_tanggal_event, is_record_count_empty);
+                                    
+                                    console.log(is_record_count_empty);
                                 },
                                 error: function(){
-                                    //
+                                    alert('Error occured on AJAX request! Please try again later.');
                                 }
                             });
                         }else{
                             alert("Hapus gagal!");
                         }
-                        console.log(response);
                     },
                     error: function(){
                         alert('Error occured on AJAX request! Please try again later.');
@@ -183,8 +187,7 @@
     <a id="btn-add-event" href="#"><span class="btn-add-event"><i class="glyphicon glyphicon-plus-sign"></i> Tambah Event</span></a>
 <?php endif; ?>
 
-<script>
-    
+<script type="text/javascript">
     $('#btn-add-event').click(function(e){
         e.preventDefault();
         

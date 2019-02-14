@@ -121,8 +121,32 @@ function getEventList(body, tanggal_event, total_event, reload_calendar=false){
             body.html(response);
             if(clicked_dom != null && reload_calendar === true)
             {
-                clicked_dom.attr('class', '');
-                clicked_dom.addClass('tag-td birthday');
+                //clicked_dom.attr('class', '');
+                //clicked_dom.addClass('tag-td birthday');
+                if(!clicked_dom.hasClass('birthday')){
+                    clicked_dom.addClass('birthday');
+                }
+            }    
+            console.log(textStatus);
+        },
+        error: function(){
+            alert('Error occured on AJAX request! Please try again later.');
+        }
+    });
+
+}
+
+function getEventListAfterDelete(tanggal_event, is_record_count_empty){
+
+    // ajax here
+    $.ajax({
+        url: 'kalender/get_event_list/',
+        type: "POST",
+        data: {bulan_dan_tanggal: tanggal_event},
+        success: function(response, textStatus, jqXHR){
+            if(clicked_dom != null && is_record_count_empty === true)
+            {
+                clicked_dom.removeClass('birthday');
             }    
             console.log(textStatus);
         },
@@ -199,7 +223,15 @@ function reloadEventList(bulan_dan_tanggal_event){
     $('#calendarmodal .modal-body #notification').fadeOutAndRemove(6000);
 
     //reloadCalendar();
+}
 
+function reloadEventListAfterDelete(bulan_dan_tanggal_event, is_record_count_empty){
+    getEventListAfterDelete(bulan_dan_tanggal_event, is_record_count_empty);
+
+    $('#calendarmodal .modal-body').prepend('<div id="notification" class="alert alert-success"><b>Suskes hapus data!</b></div>');
+    $('#calendarmodal .modal-body #notification').fadeOutAndRemove(6000);
+
+    //reloadCalendar();
 }
 
 function reloadCalendar(){

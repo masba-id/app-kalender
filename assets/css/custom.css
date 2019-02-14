@@ -89,7 +89,7 @@
     .birthday{
         text-align: center; 
         /*background-color: rgb(255, 17, 0);*/
-        background-color: #00C853;
+        background-color: #00C853 !important;
     }
     
     .tag-td.birthday, .birthday>a{
