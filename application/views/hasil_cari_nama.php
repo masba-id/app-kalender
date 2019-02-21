@@ -1,6 +1,10 @@
 <?php if(!empty($search_results)): ?>
-	<div class="alert alert-success">
-        <h4>Hasil pencarian nama "<b><?=$nama?></b>":</h4>
+	<div class="alert alert-info">
+        <?php if(empty($nama)): ?>
+            <h4>Hasil pencarian tanpa <i>keyword</i> akan menampilkan <b>semua nama</b> dalam database (<b><?= count($search_results) ?></b> nama)</h4>
+        <?php else: ?>    
+            <h4>Ditemukan <b><?= count($search_results) ?></b> hasil pencarian dengan <i>keyword</i> &nbsp;"<b><?=$nama?></b>"</h4>
+        <?php endif; ?>
     </div>
 	<div class="table-responsive">
         <p>NB: Silakan klik pada data <b>Nama</b> atau <b>Tanggal Lahir</b> jika ingin merubahnya</p>
@@ -22,7 +26,7 @@
                         <input class="mydatepicker" type="text" value="<?=$s['birth_date']?>" onBlur="saveDateToDatabase(this,'birth_date','<?=$s['id']?>')" onClick="showEditDate(this,'<?=$s['id']?>');">
                         <input type="hidden" id="birth-date-for-<?=$s['id']?>">
                     </td>
-					<td id="age-for-<?=$s['id']?>"><?=$s['age']?> Tahun</td>
+					<td id="age-for-<?=$s['id']?>"><?=$s['age']<0?0:$s['age']?> Tahun</td>
 					<td><i class="glyphicon glyphicon-trash delete" title="Delete"></i></td>
 				</tr>
 			<?php $i++; endforeach; ?>
@@ -91,7 +95,7 @@
 
         function saveToDatabase(editableObj, column, id){
             $(editableObj).css("background","#FFF url(assets/images/loadericon.gif) no-repeat right");
-            var v = editableObj.innerHTML.trim();
+            var v = $(editableObj).text().trim();
             $.ajax({
                 url: 'kalender/update_event/',
                 type: "POST",

@@ -94,6 +94,7 @@
             <div class="text-center">
                 <p>© <?=date('Y')?></p>
                 <h5 class="credit-author">BAGOS ANGGARA</h5>
+                <p>Powered By <a href="https://www.codeigniter.com" target="_blank" style="color: maroon;font-weight: bold;">CodeIgniter <?=CI_VERSION?></a></p>
             </div>
             <!--/.Copyright-->
         </footer>
