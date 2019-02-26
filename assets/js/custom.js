@@ -136,7 +136,7 @@ function getEventList(body, tanggal_event, total_event, reload_calendar=false){
 
 }
 
-function getEventListAfterDelete(tanggal_event, is_record_count_empty){
+function getEventListAfterDelete(body, tanggal_event, is_record_count_empty){
 
     // ajax here
     $.ajax({
@@ -144,6 +144,7 @@ function getEventListAfterDelete(tanggal_event, is_record_count_empty){
         type: "POST",
         data: {bulan_dan_tanggal: tanggal_event},
         success: function(response, textStatus, jqXHR){
+            body.html(response);
             if(clicked_dom != null && is_record_count_empty === true)
             {
                 clicked_dom.removeClass('birthday');
@@ -226,7 +227,13 @@ function reloadEventList(bulan_dan_tanggal_event){
 }
 
 function reloadEventListAfterDelete(bulan_dan_tanggal_event, is_record_count_empty){
-    getEventListAfterDelete(bulan_dan_tanggal_event, is_record_count_empty);
+    // prepare modal body object
+    var body = $('#calendarmodal .modal-body').find('#calendar-body');
+
+    // loading content
+    body.html(img_loader + ' Updating list . . . ');
+    
+    getEventListAfterDelete(body, bulan_dan_tanggal_event, is_record_count_empty);
 
     $('#calendarmodal .modal-body').prepend('<div id="notification" class="alert alert-success"><b>Suskes hapus data!</b></div>');
     $('#calendarmodal .modal-body #notification').fadeOutAndRemove(6000);

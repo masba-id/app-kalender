@@ -10,6 +10,8 @@
         <link href="<?=base_url('assets/css/custom.css')?>" rel="stylesheet">
         <!-- Custom jQuery UI CSS -->
         <link href="<?=base_url('assets/css/custom-jquery-ui.css')?>" rel="stylesheet">
+        <!-- Favicon -->
+        <link rel="icon" href="<?=base_url('assets/images/calendar-favicon.png')?>" sizes="34x36" />
         
         <!-- jQuery 2.1.4 Core JavaScript -->
         <script src="<?=base_url('assets/js/jquery.min.js')?>"></script>
